@@ -1,0 +1,9 @@
+{* Latte template *}
+
+	<article>    
+            <h4>{$clanek->title}</h4>
+            <p>{$clanek->content}<p>   
+            <p>{$clanek->releasedDate|date:'%d.%m.%Y'}<p>   
+            <p>{$clanek->author->getInfo()['prijmeni']}<p>   
+            <p><img src="{stream_get_contents($clanek->author->getPhoto())|dataStream}" alt="{$clanek->author->getInfo()['prijmeni']}" style="width:200px;"></p>
+        </article>    

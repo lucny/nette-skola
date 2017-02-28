@@ -1,0 +1,48 @@
+{* This is the welcome page, you can delete it *}
+
+{block content}
+<div id="banner">
+	<h1 n:block=title>Články</h1>
+</div>
+
+<div id="content">       
+    <h3>AJAX seznam</h3>
+    {foreach $articles as $article}
+        <h4><a n:href="changeArticle! $article->id" class="ajax">{$article->title}</a></h4>
+    {/foreach}
+    <hr>    
+    <h3>Dialog seznam</h3>
+    {foreach $articles as $article}
+        <h4><a n:href="changeArticle! $article->id" class="ajax dialog-open">{$article->title}</a></h4>
+    {/foreach}
+    
+<h2>Ajax</h2>
+    <h3>Aktuální článek (1 metoda)</h3>
+        <div id="dialog" title="Článek">
+        {snippet clanek}
+	<article>    
+            <h4>{$clanek->title}</h4>
+            <p>{$clanek->content}<p>   
+            <p>{$clanek->releasedDate|date:'%d.%m.%Y'}<p>   
+            <p>{$clanek->author->getInfo()['prijmeni']}<p>   
+            <p><img src="{stream_get_contents($clanek->author->getPhoto())|dataStream}" alt="{$clanek->author->getInfo()['prijmeni']}" style="width:200px;"></p>
+        </article>    
+        {/snippet}
+        </div>
+    <hr>
+    <h3>Snippet v šabloně</h3>
+    {snippet wrapper}
+        {include 'articles-child.latte'}
+    {/snippet}    
+</div>
+       
+{/block}
+
+{block scripts}
+{include parent}
+{/block}
+
+
+{block head}
+{/block}
+

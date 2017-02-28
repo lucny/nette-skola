@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/config/config.neon</file>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/presenters/HomepagePresenter.php</file>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/presenters/templates/Homepage/articles.latte</file>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/router/RouterFactory.php</file>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/presenters/templates/Homepage/detailAjax.latte</file>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/config/config.local.neon</file>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/presenters/templates/@layout.latte</file>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/presenters/templates/Homepage/articles-child.latte</file>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/model/entities/Article.php</file>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/presenters/templates/Homepage/default.latte</file>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/model/entities/User.php</file>
+            <file>file:/C:/xampp/htdocs/nette-skola/app/presenters/templates/Homepage/detail.latte</file>
+        </group>
+    </open-files>
+</project-private>

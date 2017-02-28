@@ -1,28 +1,78 @@
 {**
  * @param string   $basePath web base path
  * @param array    $flashes  flash messages
- *}
+*}
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{ifset title}{include title|stripHtml} | {/ifset}Nette Sandbox</title>
+        <link href="{$basePath}/css/jquery-ui.min.css" rel="stylesheet">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <link rel="stylesheet" href="{$basePath}/css/style.css">
+        {block head}{/block}
+    </head>
+    <body>
+        <header class="jumbotron text-center">
+            <h1>Zpravodaj v Nette</h1>
+        </header>    
+        <div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+        <div class="container">
+            {include content}
+        </div>
+        <footer class="text-center">
+            <hr>
+            Copyright &copy; Marek Lučný 2017
+        </footer>
 
-	<title>{ifset title}{include title|stripHtml} | {/ifset}Nette Sandbox</title>
+        {block scripts}
+        <!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://nette.github.io/resources/js/netteForms.min.js"></script>-->
+        <script src="{$basePath}/js/jquery.js"></script>
+        <!-- Bootstrap JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script>
+            $.fn.bootstrapBtn = $.fn.button.noConflict();
+        </script>
+        <script src="{$basePath}/js/jquery-ui.min.js"></script>
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <script src="{$basePath}/js/tinymce/tinymce.min.js"></script>
+        <script src="{$basePath}/js/nette.ajax.js"></script> {* Nette Ajax depens on jQuery *}
+        <script>
+            $(function () {
+                $.nette.init();
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="{$basePath}/css/style.css">
-	{block head}{/block}
-</head>
-
-<body>
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
-
-	{include content}
-
-	{block scripts}
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://nette.github.io/resources/js/netteForms.min.js"></script>
-	<script src="{$basePath}/js/main.js"></script>
-	{/block}
-</body>
+                var dialog = $("#dialog").dialog({
+                    autoOpen: false,
+                    height: 400,
+                    width: 600,
+                    modal: true,
+                    buttons: {
+                        OK: function () {
+                            dialog.dialog("close");
+                        },
+                    },
+                });
+                                
+                $(".dialog-open").click(function(){
+		  	//dialog.dialog("open");
+                        $( document ).ajaxComplete(function() {
+                            $(dialog).find("h4").hide();
+                            dialog.dialog('option','title',$(dialog).find("h4").html());                        
+                            dialog.dialog('open');                        
+                        });                        
+                });
+            });
+        </script>
+        {/block}
+    </body>
 </html>

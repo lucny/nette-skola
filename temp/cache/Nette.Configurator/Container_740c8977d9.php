@@ -59,8 +59,20 @@ class Container_740c8977d9 extends Nette\DI\Container
 				[
 					'doctrine.default.repositoryFactory',
 					'doctrine.default.diagnosticsPanel',
+					'translation.userLocaleResolver.param',
+					'translation.extractor.latte',
 				],
-				['doctrine.default.cacheCleaner'],
+				[
+					'doctrine.default.cacheCleaner',
+					'translation.catalogueCompiler',
+					'translation.panel',
+					'translation.userLocaleResolver.acceptHeader',
+					'translation.userLocaleResolver.session',
+					'translation.helpers',
+					'translation.fallbackResolver',
+					'translation.catalogueFactory',
+					'translation.loader',
+				],
 			],
 			'Doctrine\ORM\Repository\RepositoryFactory' => [['doctrine.default.repositoryFactory']],
 			'Kdyby\Doctrine\RepositoryFactory' => [['doctrine.default.repositoryFactory']],
@@ -79,7 +91,7 @@ class Container_740c8977d9 extends Nette\DI\Container
 			'Kdyby\Persistence\QueryExecutor' => [1 => ['doctrine.default.entityManager', 'doctrine.dao']],
 			'Kdyby\Persistence\Queryable' => [1 => ['doctrine.default.entityManager', 'doctrine.dao']],
 			'Kdyby\Doctrine\EntityManager' => [1 => ['doctrine.default.entityManager']],
-			'Tracy\IBarPanel' => [['doctrine.default.diagnosticsPanel']],
+			'Tracy\IBarPanel' => [['doctrine.default.diagnosticsPanel'], ['translation.panel']],
 			'Doctrine\DBAL\Logging\SQLLogger' => [['doctrine.default.diagnosticsPanel']],
 			'Kdyby\Doctrine\Diagnostics\Panel' => [['doctrine.default.diagnosticsPanel']],
 			'Doctrine\DBAL\Connection' => [1 => ['doctrine.default.connection']],
@@ -115,6 +127,7 @@ class Container_740c8977d9 extends Nette\DI\Container
 					'doctrine.cli.9',
 					'doctrine.cli.10',
 					'doctrine.cli.11',
+					'translation.console.extract',
 				],
 			],
 			'Doctrine\DBAL\Tools\Console\Command\ImportCommand' => [1 => ['doctrine.cli.0']],
@@ -142,7 +155,126 @@ class Container_740c8977d9 extends Nette\DI\Container
 			'Doctrine\Common\Persistence\ConnectionRegistry' => [1 => ['doctrine.registry']],
 			'Doctrine\Common\Persistence\ManagerRegistry' => [1 => ['doctrine.registry']],
 			'Kdyby\Doctrine\Registry' => [1 => ['doctrine.registry']],
-			'App\Forms\FormFactory' => [1 => ['63_App_Forms_FormFactory']],
+			'Symfony\Component\Translation\Translator' => [1 => ['translation.default']],
+			'Symfony\Component\Translation\TranslatorBagInterface' => [1 => ['translation.default']],
+			'Symfony\Component\Translation\TranslatorInterface' => [1 => ['translation.default']],
+			'Kdyby\Translation\ITranslator' => [1 => ['translation.default']],
+			'Nette\Localization\ITranslator' => [1 => ['translation.default']],
+			'Kdyby\Translation\Translator' => [1 => ['translation.default']],
+			'Kdyby\Translation\CatalogueCompiler' => [1 => ['translation.catalogueCompiler']],
+			'Kdyby\Translation\Diagnostics\Panel' => [1 => ['translation.panel']],
+			'Kdyby\Translation\IUserLocaleResolver' => [
+				['translation.userLocaleResolver.param'],
+				[
+					'translation.userLocaleResolver.acceptHeader',
+					'translation.userLocaleResolver.session',
+					'translation.userLocaleResolver',
+				],
+			],
+			'Kdyby\Translation\LocaleResolver\LocaleParamResolver' => [['translation.userLocaleResolver.param']],
+			'Kdyby\Translation\LocaleResolver\AcceptHeaderResolver' => [1 => ['translation.userLocaleResolver.acceptHeader']],
+			'Kdyby\Translation\LocaleResolver\SessionResolver' => [1 => ['translation.userLocaleResolver.session']],
+			'Kdyby\Translation\TemplateHelpers' => [1 => ['translation.helpers']],
+			'Kdyby\Translation\FallbackResolver' => [1 => ['translation.fallbackResolver']],
+			'Kdyby\Translation\CatalogueFactory' => [1 => ['translation.catalogueFactory']],
+			'Symfony\Component\Translation\MessageSelector' => [1 => ['translation.selector']],
+			'Symfony\Component\Translation\Extractor\ExtractorInterface' => [1 => ['translation.extractor'], 0 => ['translation.extractor.latte']],
+			'Symfony\Component\Translation\Extractor\ChainExtractor' => [1 => ['translation.extractor']],
+			'Kdyby\Translation\Extractors\LatteExtractor' => [['translation.extractor.latte']],
+			'Symfony\Component\Translation\Writer\TranslationWriter' => [1 => ['translation.writer']],
+			'Symfony\Component\Translation\Dumper\FileDumper' => [
+				[
+					'translation.dumper.php',
+					'translation.dumper.xliff',
+					'translation.dumper.po',
+					'translation.dumper.mo',
+					'translation.dumper.yml',
+					'translation.dumper.neon',
+					'translation.dumper.qt',
+					'translation.dumper.csv',
+					'translation.dumper.ini',
+					'translation.dumper.res',
+				],
+			],
+			'Symfony\Component\Translation\Dumper\DumperInterface' => [
+				[
+					'translation.dumper.php',
+					'translation.dumper.xliff',
+					'translation.dumper.po',
+					'translation.dumper.mo',
+					'translation.dumper.yml',
+					'translation.dumper.neon',
+					'translation.dumper.qt',
+					'translation.dumper.csv',
+					'translation.dumper.ini',
+					'translation.dumper.res',
+				],
+			],
+			'Symfony\Component\Translation\Dumper\PhpFileDumper' => [['translation.dumper.php']],
+			'Symfony\Component\Translation\Dumper\XliffFileDumper' => [['translation.dumper.xliff']],
+			'Symfony\Component\Translation\Dumper\PoFileDumper' => [['translation.dumper.po']],
+			'Symfony\Component\Translation\Dumper\MoFileDumper' => [['translation.dumper.mo']],
+			'Symfony\Component\Translation\Dumper\YamlFileDumper' => [['translation.dumper.yml']],
+			'Kdyby\Translation\Dumper\NeonFileDumper' => [['translation.dumper.neon']],
+			'Symfony\Component\Translation\Dumper\QtFileDumper' => [['translation.dumper.qt']],
+			'Symfony\Component\Translation\Dumper\CsvFileDumper' => [['translation.dumper.csv']],
+			'Symfony\Component\Translation\Dumper\IniFileDumper' => [['translation.dumper.ini']],
+			'Symfony\Component\Translation\Dumper\IcuResFileDumper' => [['translation.dumper.res']],
+			'Kdyby\Translation\IResourceLoader' => [1 => ['translation.loader']],
+			'Kdyby\Translation\TranslationLoader' => [1 => ['translation.loader']],
+			'Symfony\Component\Translation\Loader\FileLoader' => [
+				[
+					'translation.loader.php',
+					'translation.loader.yml',
+					'translation.loader.po',
+					'translation.loader.mo',
+					'translation.loader.csv',
+					'translation.loader.ini',
+					'translation.loader.json',
+				],
+			],
+			'Symfony\Component\Translation\Loader\ArrayLoader' => [
+				[
+					'translation.loader.php',
+					'translation.loader.yml',
+					'translation.loader.po',
+					'translation.loader.mo',
+					'translation.loader.csv',
+					'translation.loader.ini',
+					'translation.loader.json',
+					'translation.loader.neon',
+				],
+			],
+			'Symfony\Component\Translation\Loader\LoaderInterface' => [
+				[
+					'translation.loader.php',
+					'translation.loader.yml',
+					'translation.loader.xlf',
+					'translation.loader.po',
+					'translation.loader.mo',
+					'translation.loader.ts',
+					'translation.loader.csv',
+					'translation.loader.res',
+					'translation.loader.dat',
+					'translation.loader.ini',
+					'translation.loader.json',
+					'translation.loader.neon',
+				],
+			],
+			'Symfony\Component\Translation\Loader\PhpFileLoader' => [['translation.loader.php']],
+			'Symfony\Component\Translation\Loader\YamlFileLoader' => [['translation.loader.yml']],
+			'Symfony\Component\Translation\Loader\XliffFileLoader' => [['translation.loader.xlf']],
+			'Symfony\Component\Translation\Loader\PoFileLoader' => [['translation.loader.po']],
+			'Symfony\Component\Translation\Loader\MoFileLoader' => [['translation.loader.mo']],
+			'Symfony\Component\Translation\Loader\QtFileLoader' => [['translation.loader.ts']],
+			'Symfony\Component\Translation\Loader\CsvFileLoader' => [['translation.loader.csv']],
+			'Symfony\Component\Translation\Loader\IcuResFileLoader' => [['translation.loader.res', 'translation.loader.dat']],
+			'Symfony\Component\Translation\Loader\IcuDatFileLoader' => [['translation.loader.dat']],
+			'Symfony\Component\Translation\Loader\IniFileLoader' => [['translation.loader.ini']],
+			'Symfony\Component\Translation\Loader\JsonFileLoader' => [['translation.loader.json']],
+			'Kdyby\Translation\Loader\NeonFileLoader' => [['translation.loader.neon']],
+			'Kdyby\Translation\Console\ExtractCommand' => [1 => ['translation.console.extract']],
+			'App\Forms\FormFactory' => [1 => ['101_App_Forms_FormFactory']],
 			'App\Presenters\BasePresenter' => [1 => ['application.1', 'application.3']],
 			'Nette\Application\UI\Presenter' => [['application.1', 'application.3', 'application.4']],
 			'Nette\Application\UI\Control' => [['application.1', 'application.3', 'application.4']],
@@ -174,7 +306,7 @@ class Container_740c8977d9 extends Nette\DI\Container
 			'Nette\DI\Container' => [1 => ['container']],
 		],
 		'services' => [
-			'63_App_Forms_FormFactory' => 'App\Forms\FormFactory',
+			'101_App_Forms_FormFactory' => 'App\Forms\FormFactory',
 			'annotations.cache.annotations' => 'Doctrine\Common\Cache\Cache',
 			'annotations.reader' => 'Doctrine\Common\Annotations\Reader',
 			'annotations.reflectionReader' => 'Doctrine\Common\Annotations\AnnotationReader',
@@ -244,6 +376,44 @@ class Container_740c8977d9 extends Nette\DI\Container
 			'tracy.bar' => 'Tracy\Bar',
 			'tracy.blueScreen' => 'Tracy\BlueScreen',
 			'tracy.logger' => 'Tracy\ILogger',
+			'translation.catalogueCompiler' => 'Kdyby\Translation\CatalogueCompiler',
+			'translation.catalogueFactory' => 'Kdyby\Translation\CatalogueFactory',
+			'translation.console.extract' => 'Kdyby\Translation\Console\ExtractCommand',
+			'translation.default' => 'Kdyby\Translation\Translator',
+			'translation.dumper.csv' => 'Symfony\Component\Translation\Dumper\CsvFileDumper',
+			'translation.dumper.ini' => 'Symfony\Component\Translation\Dumper\IniFileDumper',
+			'translation.dumper.mo' => 'Symfony\Component\Translation\Dumper\MoFileDumper',
+			'translation.dumper.neon' => 'Kdyby\Translation\Dumper\NeonFileDumper',
+			'translation.dumper.php' => 'Symfony\Component\Translation\Dumper\PhpFileDumper',
+			'translation.dumper.po' => 'Symfony\Component\Translation\Dumper\PoFileDumper',
+			'translation.dumper.qt' => 'Symfony\Component\Translation\Dumper\QtFileDumper',
+			'translation.dumper.res' => 'Symfony\Component\Translation\Dumper\IcuResFileDumper',
+			'translation.dumper.xliff' => 'Symfony\Component\Translation\Dumper\XliffFileDumper',
+			'translation.dumper.yml' => 'Symfony\Component\Translation\Dumper\YamlFileDumper',
+			'translation.extractor' => 'Symfony\Component\Translation\Extractor\ChainExtractor',
+			'translation.extractor.latte' => 'Kdyby\Translation\Extractors\LatteExtractor',
+			'translation.fallbackResolver' => 'Kdyby\Translation\FallbackResolver',
+			'translation.helpers' => 'Kdyby\Translation\TemplateHelpers',
+			'translation.loader' => 'Kdyby\Translation\TranslationLoader',
+			'translation.loader.csv' => 'Symfony\Component\Translation\Loader\CsvFileLoader',
+			'translation.loader.dat' => 'Symfony\Component\Translation\Loader\IcuDatFileLoader',
+			'translation.loader.ini' => 'Symfony\Component\Translation\Loader\IniFileLoader',
+			'translation.loader.json' => 'Symfony\Component\Translation\Loader\JsonFileLoader',
+			'translation.loader.mo' => 'Symfony\Component\Translation\Loader\MoFileLoader',
+			'translation.loader.neon' => 'Kdyby\Translation\Loader\NeonFileLoader',
+			'translation.loader.php' => 'Symfony\Component\Translation\Loader\PhpFileLoader',
+			'translation.loader.po' => 'Symfony\Component\Translation\Loader\PoFileLoader',
+			'translation.loader.res' => 'Symfony\Component\Translation\Loader\IcuResFileLoader',
+			'translation.loader.ts' => 'Symfony\Component\Translation\Loader\QtFileLoader',
+			'translation.loader.xlf' => 'Symfony\Component\Translation\Loader\XliffFileLoader',
+			'translation.loader.yml' => 'Symfony\Component\Translation\Loader\YamlFileLoader',
+			'translation.panel' => 'Kdyby\Translation\Diagnostics\Panel',
+			'translation.selector' => 'Symfony\Component\Translation\MessageSelector',
+			'translation.userLocaleResolver' => 'Kdyby\Translation\IUserLocaleResolver',
+			'translation.userLocaleResolver.acceptHeader' => 'Kdyby\Translation\LocaleResolver\AcceptHeaderResolver',
+			'translation.userLocaleResolver.param' => 'Kdyby\Translation\LocaleResolver\LocaleParamResolver',
+			'translation.userLocaleResolver.session' => 'Kdyby\Translation\LocaleResolver\SessionResolver',
+			'translation.writer' => 'Symfony\Component\Translation\Writer\TranslationWriter',
 		],
 		'tags' => [
 			'inject' => [
@@ -282,6 +452,43 @@ class Container_740c8977d9 extends Nette\DI\Container
 				'doctrine.default.entityManager' => FALSE,
 				'doctrine.default.metadataDriver' => FALSE,
 				'doctrine.default.ormConfiguration' => FALSE,
+				'translation.catalogueCompiler' => FALSE,
+				'translation.catalogueFactory' => FALSE,
+				'translation.console.extract' => FALSE,
+				'translation.default' => FALSE,
+				'translation.dumper.csv' => FALSE,
+				'translation.dumper.ini' => FALSE,
+				'translation.dumper.mo' => FALSE,
+				'translation.dumper.neon' => FALSE,
+				'translation.dumper.php' => FALSE,
+				'translation.dumper.po' => FALSE,
+				'translation.dumper.qt' => FALSE,
+				'translation.dumper.res' => FALSE,
+				'translation.dumper.xliff' => FALSE,
+				'translation.dumper.yml' => FALSE,
+				'translation.extractor' => FALSE,
+				'translation.extractor.latte' => FALSE,
+				'translation.fallbackResolver' => FALSE,
+				'translation.helpers' => FALSE,
+				'translation.loader' => FALSE,
+				'translation.loader.csv' => FALSE,
+				'translation.loader.dat' => FALSE,
+				'translation.loader.ini' => FALSE,
+				'translation.loader.json' => FALSE,
+				'translation.loader.mo' => FALSE,
+				'translation.loader.neon' => FALSE,
+				'translation.loader.php' => FALSE,
+				'translation.loader.po' => FALSE,
+				'translation.loader.res' => FALSE,
+				'translation.loader.ts' => FALSE,
+				'translation.loader.xlf' => FALSE,
+				'translation.loader.yml' => FALSE,
+				'translation.selector' => FALSE,
+				'translation.userLocaleResolver' => FALSE,
+				'translation.userLocaleResolver.acceptHeader' => FALSE,
+				'translation.userLocaleResolver.param' => FALSE,
+				'translation.userLocaleResolver.session' => FALSE,
+				'translation.writer' => FALSE,
 			],
 			'nette.presenter' => [
 				'application.1' => 'App\Presenters\Error4xxPresenter',
@@ -304,6 +511,7 @@ class Container_740c8977d9 extends Nette\DI\Container
 				'doctrine.cli.7' => TRUE,
 				'doctrine.cli.8' => TRUE,
 				'doctrine.cli.9' => TRUE,
+				'translation.console.extract' => 'latte',
 			],
 			'doctrine.connection' => ['doctrine.default.connection' => TRUE],
 			'kdyby.doctrine.connection' => ['doctrine.default.connection' => TRUE],
@@ -312,6 +520,33 @@ class Container_740c8977d9 extends Nette\DI\Container
 			'kdyby.console.helper' => [
 				'doctrine.helper.connection' => 'db',
 				'doctrine.helper.entityManager' => 'em',
+			],
+			'translation.dumper' => [
+				'translation.dumper.csv' => 'csv',
+				'translation.dumper.ini' => 'ini',
+				'translation.dumper.mo' => 'mo',
+				'translation.dumper.neon' => 'neon',
+				'translation.dumper.php' => 'php',
+				'translation.dumper.po' => 'po',
+				'translation.dumper.qt' => 'qt',
+				'translation.dumper.res' => 'res',
+				'translation.dumper.xliff' => 'xliff',
+				'translation.dumper.yml' => 'yml',
+			],
+			'translation.extractor' => ['translation.extractor.latte' => 'latte'],
+			'translation.loader' => [
+				'translation.loader.csv' => 'csv',
+				'translation.loader.dat' => 'dat',
+				'translation.loader.ini' => 'ini',
+				'translation.loader.json' => 'json',
+				'translation.loader.mo' => 'mo',
+				'translation.loader.neon' => 'neon',
+				'translation.loader.php' => 'php',
+				'translation.loader.po' => 'po',
+				'translation.loader.res' => 'res',
+				'translation.loader.ts' => 'ts',
+				'translation.loader.xlf' => 'xlf',
+				'translation.loader.yml' => 'yml',
 			],
 		],
 		'aliases' => [
@@ -360,7 +595,7 @@ class Container_740c8977d9 extends Nette\DI\Container
 	/**
 	 * @return App\Forms\FormFactory
 	 */
-	public function createService__63_App_Forms_FormFactory()
+	public function createService__101_App_Forms_FormFactory()
 	{
 		$service = new App\Forms\FormFactory;
 		return $service;
@@ -441,6 +676,7 @@ class Container_740c8977d9 extends Nette\DI\Container
 			$this->getService('routing.router'), $this->getService('http.request'),
 			$this->getService('http.response'), $this->getService('session.session'),
 			$this->getService('security.user'), $this->getService('latte.templateFactory'));
+		$service->EntityManager = $this->getService('doctrine.default.entityManager');
 		$service->invalidLinkMode = 5;
 		$service->onShutdown = $this->getService('events.manager')->createEvent(['App\Presenters\HomepagePresenter', 'onShutdown'],
 			$service->onShutdown, NULL, FALSE);
@@ -516,6 +752,12 @@ class Container_740c8977d9 extends Nette\DI\Container
 			$service->onResponse, NULL, FALSE);
 		$service->onError = $this->getService('events.manager')->createEvent(['Nette\Application\Application', 'onError'],
 			$service->onError, NULL, FALSE);
+		$service->onRequest[] = [
+			$this->getService('translation.userLocaleResolver.param'),
+			'onRequest',
+		];
+		$self = $this; $service->onStartup[] = function () use ($self) { $self->getService('translation.default'); };
+		$service->onRequest[] = [$this->getService('translation.panel'), 'onRequest'];
 		return $service;
 	}
 
@@ -1243,6 +1485,434 @@ class Container_740c8977d9 extends Nette\DI\Container
 	}
 
 
+	/**
+	 * @return Kdyby\Translation\CatalogueCompiler
+	 */
+	public function createServiceTranslation__catalogueCompiler()
+	{
+		$service = new Kdyby\Translation\CatalogueCompiler(new Kdyby\Translation\Caching\PhpFileStorage('C:\xampp\htdocs\nette-skola\app/../temp/cache',
+			$this->getService('cache.journal')), $this->getService('translation.fallbackResolver'),
+			$this->getService('translation.catalogueFactory'));
+		$service->enableDebugMode();
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\CatalogueFactory
+	 */
+	public function createServiceTranslation__catalogueFactory()
+	{
+		$service = new Kdyby\Translation\CatalogueFactory($this->getService('translation.fallbackResolver'),
+			$this->getService('translation.loader'));
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\Console\ExtractCommand
+	 */
+	public function createServiceTranslation__console__extract()
+	{
+		$service = new Kdyby\Translation\Console\ExtractCommand;
+		$service->defaultOutputDir = 'C:\xampp\htdocs\nette-skola\app/lang';
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\Translator
+	 */
+	public function createServiceTranslation__default()
+	{
+		$service = new Kdyby\Translation\Translator($this->getService('translation.userLocaleResolver'),
+			$this->getService('translation.selector'), $this->getService('translation.catalogueCompiler'),
+			$this->getService('translation.fallbackResolver'), $this->getService('translation.loader'));
+		$this->getService('translation.userLocaleResolver.param')->setTranslator($service);
+		$service->setDefaultLocale('en');
+		$service->setLocaleWhitelist(NULL);
+		$service->setFallbackLocales(['en_US']);
+		$this->getService('translation.panel')->register($service);
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Dumper\CsvFileDumper
+	 */
+	public function createServiceTranslation__dumper__csv()
+	{
+		$service = new Symfony\Component\Translation\Dumper\CsvFileDumper;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Dumper\IniFileDumper
+	 */
+	public function createServiceTranslation__dumper__ini()
+	{
+		$service = new Symfony\Component\Translation\Dumper\IniFileDumper;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Dumper\MoFileDumper
+	 */
+	public function createServiceTranslation__dumper__mo()
+	{
+		$service = new Symfony\Component\Translation\Dumper\MoFileDumper;
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\Dumper\NeonFileDumper
+	 */
+	public function createServiceTranslation__dumper__neon()
+	{
+		$service = new Kdyby\Translation\Dumper\NeonFileDumper;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Dumper\PhpFileDumper
+	 */
+	public function createServiceTranslation__dumper__php()
+	{
+		$service = new Symfony\Component\Translation\Dumper\PhpFileDumper;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Dumper\PoFileDumper
+	 */
+	public function createServiceTranslation__dumper__po()
+	{
+		$service = new Symfony\Component\Translation\Dumper\PoFileDumper;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Dumper\QtFileDumper
+	 */
+	public function createServiceTranslation__dumper__qt()
+	{
+		$service = new Symfony\Component\Translation\Dumper\QtFileDumper;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Dumper\IcuResFileDumper
+	 */
+	public function createServiceTranslation__dumper__res()
+	{
+		$service = new Symfony\Component\Translation\Dumper\IcuResFileDumper;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Dumper\XliffFileDumper
+	 */
+	public function createServiceTranslation__dumper__xliff()
+	{
+		$service = new Symfony\Component\Translation\Dumper\XliffFileDumper;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Dumper\YamlFileDumper
+	 */
+	public function createServiceTranslation__dumper__yml()
+	{
+		$service = new Symfony\Component\Translation\Dumper\YamlFileDumper;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Extractor\ChainExtractor
+	 */
+	public function createServiceTranslation__extractor()
+	{
+		$service = new Symfony\Component\Translation\Extractor\ChainExtractor;
+		$service->addExtractor('latte', $this->getService('translation.extractor.latte'));
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\Extractors\LatteExtractor
+	 */
+	public function createServiceTranslation__extractor__latte()
+	{
+		$service = new Kdyby\Translation\Extractors\LatteExtractor;
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\FallbackResolver
+	 */
+	public function createServiceTranslation__fallbackResolver()
+	{
+		$service = new Kdyby\Translation\FallbackResolver;
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\TemplateHelpers
+	 */
+	public function createServiceTranslation__helpers()
+	{
+		$service = $this->getService('translation.default')->createTemplateHelpers();
+		if (!$service instanceof Kdyby\Translation\TemplateHelpers) {
+			throw new Nette\UnexpectedValueException('Unable to create service \'translation.helpers\', value returned by factory is not Kdyby\Translation\TemplateHelpers type.');
+		}
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\TranslationLoader
+	 */
+	public function createServiceTranslation__loader()
+	{
+		$service = new Kdyby\Translation\TranslationLoader;
+		$service->injectServiceIds([
+			'php' => 'translation.loader.php',
+			'yml' => 'translation.loader.yml',
+			'xlf' => 'translation.loader.xlf',
+			'po' => 'translation.loader.po',
+			'mo' => 'translation.loader.mo',
+			'ts' => 'translation.loader.ts',
+			'csv' => 'translation.loader.csv',
+			'res' => 'translation.loader.res',
+			'dat' => 'translation.loader.dat',
+			'ini' => 'translation.loader.ini',
+			'json' => 'translation.loader.json',
+			'neon' => 'translation.loader.neon',
+		], $this);
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Loader\CsvFileLoader
+	 */
+	public function createServiceTranslation__loader__csv()
+	{
+		$service = new Symfony\Component\Translation\Loader\CsvFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Loader\IcuDatFileLoader
+	 */
+	public function createServiceTranslation__loader__dat()
+	{
+		$service = new Symfony\Component\Translation\Loader\IcuDatFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Loader\IniFileLoader
+	 */
+	public function createServiceTranslation__loader__ini()
+	{
+		$service = new Symfony\Component\Translation\Loader\IniFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Loader\JsonFileLoader
+	 */
+	public function createServiceTranslation__loader__json()
+	{
+		$service = new Symfony\Component\Translation\Loader\JsonFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Loader\MoFileLoader
+	 */
+	public function createServiceTranslation__loader__mo()
+	{
+		$service = new Symfony\Component\Translation\Loader\MoFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\Loader\NeonFileLoader
+	 */
+	public function createServiceTranslation__loader__neon()
+	{
+		$service = new Kdyby\Translation\Loader\NeonFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Loader\PhpFileLoader
+	 */
+	public function createServiceTranslation__loader__php()
+	{
+		$service = new Symfony\Component\Translation\Loader\PhpFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Loader\PoFileLoader
+	 */
+	public function createServiceTranslation__loader__po()
+	{
+		$service = new Symfony\Component\Translation\Loader\PoFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Loader\IcuResFileLoader
+	 */
+	public function createServiceTranslation__loader__res()
+	{
+		$service = new Symfony\Component\Translation\Loader\IcuResFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Loader\QtFileLoader
+	 */
+	public function createServiceTranslation__loader__ts()
+	{
+		$service = new Symfony\Component\Translation\Loader\QtFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Loader\XliffFileLoader
+	 */
+	public function createServiceTranslation__loader__xlf()
+	{
+		$service = new Symfony\Component\Translation\Loader\XliffFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Loader\YamlFileLoader
+	 */
+	public function createServiceTranslation__loader__yml()
+	{
+		$service = new Symfony\Component\Translation\Loader\YamlFileLoader;
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\Diagnostics\Panel
+	 */
+	public function createServiceTranslation__panel()
+	{
+		$service = new Kdyby\Translation\Diagnostics\Panel('C:\xampp\htdocs\nette-skola');
+		$service->setLocaleWhitelist(NULL);
+		$service->setLocaleResolvers([
+			$this->getService('translation.userLocaleResolver.param'),
+			$this->getService('translation.userLocaleResolver.acceptHeader'),
+		]);
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\MessageSelector
+	 */
+	public function createServiceTranslation__selector()
+	{
+		$service = new Symfony\Component\Translation\MessageSelector;
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\IUserLocaleResolver
+	 */
+	public function createServiceTranslation__userLocaleResolver()
+	{
+		$service = new Kdyby\Translation\LocaleResolver\ChainResolver;
+		$service->addResolver($this->getService('translation.userLocaleResolver.acceptHeader'));
+		$service->addResolver($this->getService('translation.userLocaleResolver.param'));
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\LocaleResolver\AcceptHeaderResolver
+	 */
+	public function createServiceTranslation__userLocaleResolver__acceptHeader()
+	{
+		$service = new Kdyby\Translation\LocaleResolver\AcceptHeaderResolver($this->getService('http.request'));
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\LocaleResolver\LocaleParamResolver
+	 */
+	public function createServiceTranslation__userLocaleResolver__param()
+	{
+		$service = new Kdyby\Translation\LocaleResolver\LocaleParamResolver;
+		return $service;
+	}
+
+
+	/**
+	 * @return Kdyby\Translation\LocaleResolver\SessionResolver
+	 */
+	public function createServiceTranslation__userLocaleResolver__session()
+	{
+		$service = new Kdyby\Translation\LocaleResolver\SessionResolver($this->getService('session.session'),
+			$this->getService('http.response'));
+		return $service;
+	}
+
+
+	/**
+	 * @return Symfony\Component\Translation\Writer\TranslationWriter
+	 */
+	public function createServiceTranslation__writer()
+	{
+		$service = new Symfony\Component\Translation\Writer\TranslationWriter;
+		$service->addDumper('php', $this->getService('translation.dumper.php'));
+		$service->addDumper('xliff', $this->getService('translation.dumper.xliff'));
+		$service->addDumper('po', $this->getService('translation.dumper.po'));
+		$service->addDumper('mo', $this->getService('translation.dumper.mo'));
+		$service->addDumper('yml', $this->getService('translation.dumper.yml'));
+		$service->addDumper('neon', $this->getService('translation.dumper.neon'));
+		$service->addDumper('qt', $this->getService('translation.dumper.qt'));
+		$service->addDumper('csv', $this->getService('translation.dumper.csv'));
+		$service->addDumper('ini', $this->getService('translation.dumper.ini'));
+		$service->addDumper('res', $this->getService('translation.dumper.res'));
+		return $service;
+	}
+
+
 	public function initialize()
 	{
 		Kdyby\Doctrine\Proxy\ProxyAutoloader::create('C:\xampp\htdocs\nette-skola\app/../temp/proxies', 'Kdyby\GeneratedProxy')->register();Doctrine\Common\Annotations\AnnotationRegistry::registerLoader("class_exists");
@@ -1260,6 +1930,8 @@ class Container_740c8977d9 extends Nette\DI\Container
 		Tracy\Debugger::getBlueScreen()->collapsePaths[] = 'C:\xampp\htdocs\nette-skola\vendor\kdyby\doctrine\src\Kdyby\Doctrine';
 		Tracy\Debugger::getBlueScreen()->collapsePaths[] = 'C:\xampp\htdocs\nette-skola\vendor\doctrine';
 		Tracy\Debugger::getBlueScreen()->collapsePaths[] = 'C:\xampp\htdocs\nette-skola\app/../temp/proxies';
+
+		Kdyby\Translation\Diagnostics\Panel::registerBluescreen();
 	}
 
 }
@@ -1331,6 +2003,9 @@ class Container_740c8977d9_Nette_Bridges_ApplicationLatte_ILatteFactoryImpl_latt
 		Nette\Utils\Html::$xhtml = FALSE;
 		$service->onCompile = $this->container->getService('events.manager')->createEvent(['Latte\Engine', 'onCompile'],
 			$service->onCompile, NULL, FALSE);
+		$service->onCompile[] = function($engine) { Kdyby\Translation\Latte\TranslateMacros::install($engine->getCompiler()); };
+		$service->addFilter('translate', [$this->container->getService('translation.helpers'), 'translate']);
+		$service->addFilter('getTranslator', [$this->container->getService('translation.helpers'), 'getTranslator']);
 		return $service;
 	}
 
